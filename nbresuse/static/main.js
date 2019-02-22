@@ -47,6 +47,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             $('#nbresuse-mem').text(mem_display + ' MB');
 
             var disk_display = Math.round(data['homedir']['used'])
+            $('#nbresuse-disk').text(disk_display + ' Blocks');
         });
     }
 
