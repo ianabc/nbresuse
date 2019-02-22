@@ -9,6 +9,11 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             ).append(
                 $('<span>').attr('id', 'nbresuse-mem')
                            .attr('title', 'Actively used Memory (updates every 5s)')
+            ).append(
+                $('<strong>').text('Disk: ')
+            ).append(
+                $('<span>').attr('id', 'nbresuse-disk')
+                           .attr('title', 'Currently used disk space (updates every 5s)')
             )
         );
         // FIXME: Do something cleaner to get styles in here?
@@ -24,12 +29,12 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
         $.getJSON(utils.get_body_data('baseUrl') + 'metrics', function(data) {
             // FIXME: Proper setups for MB and GB. MB should have 0 things
             // after the ., but GB should have 2.
-            var display = Math.round(data['rss'] / (1024 * 1024));
+            var mem_display = Math.round(data['rss'] / (1024 * 1024));
 
             var limits = data['limits'];
             if ('memory' in limits) {
                 if ('rss' in limits['memory']) {
-                    display += " / " + (limits['memory']['rss'] / (1024 * 1024));
+                    mem_display += " / " + (limits['memory']['rss'] / (1024 * 1024));
                 }
                 if (limits['memory']['warn']) {
                     $('#nbresuse-display').addClass('nbresuse-warn');
@@ -39,7 +44,9 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             }
             if (data['limits']['memory'] !== null) {
             }
-            $('#nbresuse-mem').text(display + ' MB');
+            $('#nbresuse-mem').text(mem_display + ' MB');
+
+            var disk_display = Math.round(data['homedir']['used'])
         });
     }
 
