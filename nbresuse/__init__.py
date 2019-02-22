@@ -35,6 +35,7 @@ class MetricsHandler(IPythonHandler):
                 limits['memory']['warn'] = (config.mem_limit - rss) < (config.mem_limit * config.mem_warning_threshold)
 
         if config.disk_warning_threshold != 0:
+            limits['disk'] = {}
             limits['disk']['warn'] = disk['avail'] < (disk['size'] * config.disk_warning_threshold)
 
         metrics = {
