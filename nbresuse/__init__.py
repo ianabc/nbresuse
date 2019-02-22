@@ -13,6 +13,12 @@ class MetricsHandler(IPythonHandler):
         Calculate and return current resource usage metrics
         """
         config = self.settings['nbresuse_display_config']
+        
+        homedir_statvfs = os.statvfs(os.environ['HOME'], '/')
+        homedir['size']  = homedir_statvfs.f_blocks
+        homedir['avail'] = homedir_statvfs.f_bavail
+        homedir['used']  = homedir['size'] - homedir['avail']
+
         cur_process = psutil.Process()
         all_processes = [cur_process] + cur_process.children(recursive=True)
         rss = sum([p.memory_info().rss for p in all_processes])
@@ -25,8 +31,10 @@ class MetricsHandler(IPythonHandler):
             }
             if config.mem_warning_threshold != 0:
                 limits['memory']['warn'] = (config.mem_limit - rss) < (config.mem_limit * config.mem_warning_threshold)
+        
         metrics = {
             'rss': rss,
+            'homedir': homedir
             'limits': limits,
         }
         self.write(json.dumps(metrics))
