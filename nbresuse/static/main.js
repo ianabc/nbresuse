@@ -7,7 +7,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             .append(
                 $('<strong>').text('Memory: ')
             ).append(
-                $('<span>').attr('id', 'nbresuse-mem').addclass('nbreuse-metric')
+                $('<span>').attr('id', 'nbresuse-mem').addClass('nbreuse-metric')
                            .attr('title', 'Actively used Memory (updates every 5s)')
             )
             .append(
