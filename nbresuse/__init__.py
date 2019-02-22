@@ -1,7 +1,7 @@
 import os
 import json
 import psutil
-from traitlets import Float, Int, default
+from traitlets import Float, Int, Unicode, default
 from traitlets.config import Configurable
 from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler
@@ -14,12 +14,12 @@ class MetricsHandler(IPythonHandler):
         """
         config = self.settings['nbresuse_display_config']
         
-        homedir_statvfs = os.statvfs(os.environ.get('HOME', '/'))
-        homedir = {}
-        homedir['frsize'] = homedir_statvfs.f_frsize
-        homedir['size']  = homedir_statvfs.f_blocks
-        homedir['avail'] = homedir_statvfs.f_bavail
-        homedir['used']  = homedir['size'] - homedir['avail']
+        disk_statvfs = os.statvfs(os.environ.get('HOME', '/'))
+        disk = {}
+        disk['frsize'] = disk_statvfs.f_frsize
+        disk['size']  = disk_statvfs.f_blocks
+        disk['avail'] = disk_statvfs.f_bavail
+        disk['used']  = disk['size'] - disk['avail']
 
         cur_process = psutil.Process()
         all_processes = [cur_process] + cur_process.children(recursive=True)
@@ -33,10 +33,13 @@ class MetricsHandler(IPythonHandler):
             }
             if config.mem_warning_threshold != 0:
                 limits['memory']['warn'] = (config.mem_limit - rss) < (config.mem_limit * config.mem_warning_threshold)
-        
+
+        if config.disk_warning_threshold != 0:
+            limits['disk']['warn'] = disk[avail] < (disk['size'] * config.disk_warning_threshold)
+
         metrics = {
             'rss': rss,
-            'homedir': homedir,
+            'disk': disk,
             'limits': limits
         }
         self.write(json.dumps(metrics))
@@ -96,6 +99,35 @@ class ResourceUseDisplay(Configurable):
     @default('mem_limit')
     def _mem_limit_default(self):
         return int(os.environ.get('MEM_LIMIT', 0))
+
+    disk_warning_threshold = Float(
+        0.1,
+        help="""
+        Warn user with flashing lights when home directory free space drops
+        below this fraction the home directory size.
+
+        For example, if $HOME is 1024 MB, warn when the free space drops below
+        0.1 * 1024 = 102 MB.
+
+        Defaults to 0.1 (10%).
+
+        Set to 0 to disable the warning.
+        """
+    )
+
+
+    disk_path = Unicode(
+        help="""
+        Path for which to monitor free space.
+
+        Defaults to the contents of the `HOME` environment variable.
+        """
+    )
+
+    @default('disk_path')
+    def _disk_path_default(self):
+        return os.environ.get('HOME', '/')
+
 
 def load_jupyter_server_extension(nbapp):
     """
