@@ -113,7 +113,8 @@ class ResourceUseDisplay(Configurable):
         Defaults to 0.1 (10%).
 
         Set to 0 to disable the warning.
-        """
+        """,
+        config=True
     )
 
 
@@ -123,6 +124,7 @@ class ResourceUseDisplay(Configurable):
 
         Defaults to the contents of the `HOME` environment variable.
         """
+        config=True
     )
 
     @default('disk_path')
