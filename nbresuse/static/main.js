@@ -31,7 +31,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             $('<style>').html('#nbresuse-display { padding: 2px 8px; }')
         );
         $('head').append(
-            $('<style>').html('.nbresuse-metric { padding-left: 8px; float: left; }')
+            $('<style>').html('.nbresuse-metric { margin-left: 8px; float: left; }')
         );
     }
 
