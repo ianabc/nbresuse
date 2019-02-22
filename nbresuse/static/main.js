@@ -5,7 +5,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
                       .addClass('btn-group')
                       .addClass('pull-right')
             .append(
-                $('<div>').addClass('nbresuse-metric')
+                $('<div>').attr('id', 'nbresuse-display-mem').addClass('nbresuse-metric')
                 .append(
                     $('<strong>').text('Memory: ')
                 ).append(
@@ -14,12 +14,12 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
                 )
             )
             .append(
-                $('<div>').addClass('nbresuse-metric')
+                $('<div>').attr('id', 'nbresuse-display-disk').addClass('nbresuse-metric')
                 .append(
                     $('<strong>').text('Disk: ')
                 ).append(
                 $('<span>').attr('id', 'nbresuse-disk')
-                           .attr('title', 'Currently used disk space (updates every 5s)')
+                           .attr('title', 'Currently used home directory space (updates every 5s)')
                 )
             )
         );
@@ -47,17 +47,25 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
                     mem_display += " / " + (limits['memory']['rss'] / (1024 * 1024));
                 }
                 if (limits['memory']['warn']) {
-                    $('#nbresuse-display').addClass('nbresuse-warn');
+                    $('#nbresuse-display-mem').addClass('nbresuse-warn');
                 } else {
-                    $('#nbresuse-display').removeClass('nbresuse-warn');
+                    $('#nbresuse-display-mem').removeClass('nbresuse-warn');
                 }
             }
             if (data['limits']['memory'] !== null) {
             }
             $('#nbresuse-mem').text(mem_display + ' MB');
 
-            var disk_display = Math.round(data['homedir']['used'] * data['homedir']['frsize'] / (1024 * 1024));
-            disk_display += " / " + Math.round(data['homedir']['size'] * data['homedir']['frsize'] / (1024 * 1024));
+            var disk_display = Math.round(data['disk']['used'] * data['disk']['frsize'] / (1024 * 1024));
+            disk_display += " / " + Math.round(data['disk']['size'] * data['disk']['frsize'] / (1024 * 1024));
+
+            if ('disk' in limits) {
+                if (limits['disk']['warn']) {
+                    $('#nbresuse-display-disk').addClass('nbresuse-warn');
+                } else {
+                    $('#nbresuse-display-disk').removeClass('nbresuse-warn');
+                }
+            }
             $('#nbresuse-disk').text(disk_display + ' MB');
         });
     };
