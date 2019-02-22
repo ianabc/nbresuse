@@ -5,22 +5,16 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
                       .addClass('btn-group')
                       .addClass('pull-right')
             .append(
-                $('<div>').addClass('nbresuse-metric')
-                .append(
-                    $('<strong>').text('Memory: ')
-                    ).append(
-                        $('<span>').attr('id', 'nbresuse-mem')
-                                   .attr('title', 'Actively used Memory (updates every 5s)')
-                    )
-                )
+                $('<strong>').text('Memory: ')
+            ).append(
+                $('<span>').attr('id', 'nbresuse-mem').addclass('nbreuse-metric')
+                           .attr('title', 'Actively used Memory (updates every 5s)')
+            )
             .append(
-                $('<div>').addClass('nbresuse-metric')
-                .append(
                 $('<strong>').text('Disk: ')
                 ).append(
-                    $('<span>').attr('id', 'nbresuse-disk')
+                $('<span>').attr('id', 'nbresuse-disk').addClass('nbreuse-metric')
                            .attr('title', 'Currently used disk space (updates every 5s)')
-                )
             )
         );
         // FIXME: Do something cleaner to get styles in here?
