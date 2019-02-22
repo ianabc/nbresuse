@@ -5,16 +5,22 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
                       .addClass('btn-group')
                       .addClass('pull-right')
             .append(
-                $('<strong>').text('Memory: ')
-            ).append(
-                $('<span>').attr('id', 'nbresuse-mem').addClass('nbreuse-metric')
-                           .attr('title', 'Actively used Memory (updates every 5s)')
+                $('<div>').addClass('nbresuse-metric')
+                .append(
+                    $('<strong>').text('Memory: ')
+                ).append(
+                    $('<span>').attr('id', 'nbresuse-mem')
+                               .attr('title', 'Actively used Memory (updates every 5s)')
+                )
             )
             .append(
-                $('<strong>').text('Disk: ')
+                $('<div>').addClass('nbresuse-metric')
+                .append(
+                    $('<strong>').text('Disk: ')
                 ).append(
-                $('<span>').attr('id', 'nbresuse-disk').addClass('nbreuse-metric')
+                $('<span>').attr('id', 'nbresuse-disk')
                            .attr('title', 'Currently used disk space (updates every 5s)')
+                )
             )
         );
         // FIXME: Do something cleaner to get styles in here?
@@ -25,7 +31,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             $('<style>').html('#nbresuse-display { padding: 2px 8px; }')
         );
         $('head').append(
-            $('<style>').html('.nbresuse-metric { padding-left: 8px; }')
+            $('<style>').html('.nbresuse-metric { padding-left: 8px; float: left; }')
         );
     }
 
@@ -54,7 +60,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             disk_display += " / " + Math.round(data['homedir']['size'] * data['homedir']['frsize'] / (1024 * 1024));
             $('#nbresuse-disk').text(disk_display + ' MB');
         });
-    }
+    };
 
     var load_ipython_extension = function () {
         setupDOM();
