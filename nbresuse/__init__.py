@@ -35,8 +35,8 @@ class MetricsHandler(IPythonHandler):
         
         metrics = {
             'rss': rss,
-            'homedir': homedir
-            'limits': limits,
+            'homedir': homedir,
+            'limits': limits
         }
         self.write(json.dumps(metrics))
 
