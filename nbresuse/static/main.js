@@ -51,7 +51,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             $('#nbresuse-mem').text(mem_display + ' MB');
 
             var disk_display = Math.round(data['homedir']['used'] * data['homedir']['frsize'] / (1024 * 1024));
-            disk_display += " / " + Math.round(data['homedir']['size'] * data['homedir']['frsize'] / (1024 * 1024);
+            disk_display += " / " + Math.round(data['homedir']['size'] * data['homedir']['frsize'] / (1024 * 1024));
             $('#nbresuse-disk').text(disk_display + ' MB');
         });
     }
