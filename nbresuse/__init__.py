@@ -16,6 +16,7 @@ class MetricsHandler(IPythonHandler):
         
         homedir_statvfs = os.statvfs(os.environ.get('HOME', '/'))
         homedir = {}
+        homedir['bsize'] = homedir_statvfs.f_frsize
         homedir['size']  = homedir_statvfs.f_blocks
         homedir['avail'] = homedir_statvfs.f_bavail
         homedir['used']  = homedir['size'] - homedir['avail']

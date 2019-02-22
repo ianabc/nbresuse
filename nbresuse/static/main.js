@@ -5,15 +5,22 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
                       .addClass('btn-group')
                       .addClass('pull-right')
             .append(
-                $('<strong>').text('Memory: ')
-            ).append(
-                $('<span>').attr('id', 'nbresuse-mem')
-                           .attr('title', 'Actively used Memory (updates every 5s)')
-            ).append(
+                $('<div>').addClass('nbresuse-metric')
+                .append(
+                    $('<strong>').text('Memory: ')
+                    ).append(
+                        $('<span>').attr('id', 'nbresuse-mem')
+                                   .attr('title', 'Actively used Memory (updates every 5s)')
+                    )
+                )
+            .append(
+                $('<div>').addClass('nbresuse-metric')
+                .append(
                 $('<strong>').text('Disk: ')
-            ).append(
-                $('<span>').attr('id', 'nbresuse-disk')
+                ).append(
+                    $('<span>').attr('id', 'nbresuse-disk')
                            .attr('title', 'Currently used disk space (updates every 5s)')
+                )
             )
         );
         // FIXME: Do something cleaner to get styles in here?
@@ -22,6 +29,9 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
         );
         $('head').append(
             $('<style>').html('#nbresuse-display { padding: 2px 8px; }')
+        );
+        $('head').append(
+            $('<style>').html('.nbresuse-metric { padding-left: 8px; }')
         );
     }
 
@@ -46,7 +56,7 @@ define(['jquery', 'base/js/utils'], function ($, utils) {
             }
             $('#nbresuse-mem').text(mem_display + ' MB');
 
-            var disk_display = Math.round(data['homedir']['used'])
+            var disk_display = Math.round(data['homedir']['used']);
             $('#nbresuse-disk').text(disk_display + ' Blocks');
         });
     }
