@@ -14,7 +14,8 @@ class MetricsHandler(IPythonHandler):
         """
         config = self.settings['nbresuse_display_config']
         
-        homedir_statvfs = os.statvfs(os.environ['HOME'], '/')
+        homedir_statvfs = os.statvfs(os.environ.get('HOME', '/'))
+        homedir = {}
         homedir['size']  = homedir_statvfs.f_blocks
         homedir['avail'] = homedir_statvfs.f_bavail
         homedir['used']  = homedir['size'] - homedir['avail']
