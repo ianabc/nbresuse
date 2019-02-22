@@ -123,7 +123,7 @@ class ResourceUseDisplay(Configurable):
         Path for which to monitor free space.
 
         Defaults to the contents of the `HOME` environment variable.
-        """
+        """,
         config=True
     )
 
